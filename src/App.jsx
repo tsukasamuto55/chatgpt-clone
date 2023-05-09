@@ -1,16 +1,15 @@
 import { useState } from 'react';
 import Form from './components/Form';
 import { Configuration, OpenAIApi } from 'openai';
+import './App.css';
 
 function App() {
   const [model, setModel] = useState('gpt-3.5-turbo');
   const [outputs, setOutputs] = useState([]);
   const [prompt, setPrompt] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
 
   const clickHandler = async e => {
     e.preventDefault();
-    setIsLoading(true);
 
     const configuration = new Configuration({
       organization: import.meta.env.VITE_ORGANIZATION_ID,
@@ -28,22 +27,38 @@ function App() {
       response.data.choices[0].message.content,
     ]);
     console.log(prompt);
-    setIsLoading(false);
   };
+
+  const changeHandler = e => {
+    setModel(e.target.value);
+  };
+
   return (
     <>
+      <div className='model__container'>
+        <label htmlFor='model' className='model__label'>
+          Choose a chat model
+        </label>
+        <select
+          className='model__select'
+          onChange={changeHandler}
+          name='model'
+          id='model'
+        >
+          <option value='gpt-3.5-turbo'>gpt-3.5-turbo</option>
+          <option value='gpt-4'>gpt-4</option>
+        </select>
+      </div>
+
       <Form clickHandler={clickHandler} setPrompt={setPrompt} prompt={prompt} />
-      {isLoading ? (
-        <span>Loading...</span>
-      ) : (
-        outputs.map((output, index) => (
-          <div key={index}>
-            <p>{prompt}</p>
-            <p>{output}</p>
-            <br />
-          </div>
-        ))
-      )}
+
+      {outputs.map((output, index) => (
+        <div key={index}>
+          <p>{prompt}</p>
+          <p>{output}</p>
+          <br />
+        </div>
+      ))}
     </>
   );
 }

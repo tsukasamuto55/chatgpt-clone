@@ -1,0 +1,17 @@
+.model__container {
+  margin-top: 4rem;
+  display: grid;
+  justify-content: flex-end;
+  grid-template-rows: 2;
+}
+
+.model__label {
+  margin-bottom: 0.2rem;
+}
+
+.model__select {
+  grid-row: 2;
+  padding: 0.5rem;
+  font-size: 1.1rem;
+  border-radius: 5px;
+}
