@@ -22,11 +22,13 @@ function App() {
       messages: [{ role: 'user', content: prompt }],
     });
 
-    setOutputs(currentOutputs => [
-      ...currentOutputs,
-      response.data.choices[0].message.content,
+    setPrompt(''); // reset user input
+    
+    setOutputs(prevOutputs => [ // to me, prevOutputs makes more sense
+      {prompt: prompt, output: response.data.choices[0].message.content}, // create object which saves past prompts
+      ...prevOutputs
     ]);
-    console.log(prompt);
+    console.log(outputs);
   };
 
   const changeHandler = e => {
@@ -52,10 +54,10 @@ function App() {
 
       <Form clickHandler={clickHandler} setPrompt={setPrompt} prompt={prompt} />
 
-      {outputs.map((output, index) => (
+      {outputs.map((item, index) => (
         <div key={index}>
-          <p>{prompt}</p>
-          <p>{output}</p>
+          <p className='user-prompt'>{item.prompt}</p>
+          <p>{item.output}</p>
           <br />
         </div>
       ))}
