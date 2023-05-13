@@ -23,10 +23,11 @@ function App() {
     });
 
     setPrompt(''); // reset user input
-    
-    setOutputs(prevOutputs => [ // to me, prevOutputs makes more sense
-      {prompt: prompt, output: response.data.choices[0].message.content}, // create object which saves past prompts
-      ...prevOutputs
+
+    setOutputs(prevOutputs => [
+      // to me, prevOutputs makes more sense
+      ...prevOutputs,
+      { prompt: prompt, output: response.data.choices[0].message.content }, // create object which saves past prompts
     ]);
     console.log(outputs);
   };
