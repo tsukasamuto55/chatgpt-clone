@@ -1,6 +1,6 @@
-const Form = ({ clickHandler, setPrompt, prompt }) => {
+const Form = ({ submitHandler, setPrompt, prompt }) => {
   return (
-    <div className='form-section'>
+    <form className='form-section' onSubmit={submitHandler}>
       <textarea
         rows='5'
         className='form-control'
@@ -8,10 +8,10 @@ const Form = ({ clickHandler, setPrompt, prompt }) => {
         value={prompt}
         onChange={e => setPrompt(e.target.value)}
       ></textarea>
-      <button type='submit' onClick={clickHandler} className='btn'>
+      <button type='submit' className='btn'>
         Generate Response
       </button>
-    </div>
+    </form>
   );
 };
 

@@ -4,11 +4,11 @@ import { Configuration, OpenAIApi } from 'openai';
 import './App.css';
 
 function App() {
-  const [model, setModel] = useState('gpt-3.5-turbo');
+  const [model, setModel] = useState('gpt-4-1106-preview');
   const [outputs, setOutputs] = useState([]);
   const [prompt, setPrompt] = useState('');
 
-  const clickHandler = async e => {
+  const submitHandler = async e => {
     e.preventDefault();
 
     const configuration = new Configuration({
@@ -23,13 +23,16 @@ function App() {
     });
 
     setPrompt(''); // reset user input
-
+    console.log(response.data.usage);
     setOutputs(prevOutputs => [
       // to me, prevOutputs makes more sense
       ...prevOutputs,
-      { prompt: prompt, output: response.data.choices[0].message.content }, // create object which saves past prompts
+      {
+        id: crypto.randomUUID(),
+        prompt: prompt,
+        output: response.data.choices[0].message.content,
+      }, // create object which saves past prompts
     ]);
-    console.log(outputs);
   };
 
   const changeHandler = e => {
@@ -48,15 +51,21 @@ function App() {
           name='model'
           id='model'
         >
-          <option value='gpt-3.5-turbo'>gpt-3.5-turbo</option>
-          <option value='gpt-4'>gpt-4</option>
+          <option value='gpt-3.5-turbo-1106'>gpt-3.5 Turbo</option>
+          <option defaultValue={model} value='gpt-4-1106-preview'>
+            GPT-4 Turbo
+          </option>
         </select>
       </div>
 
-      <Form clickHandler={clickHandler} setPrompt={setPrompt} prompt={prompt} />
+      <Form
+        submitHandler={submitHandler}
+        setPrompt={setPrompt}
+        prompt={prompt}
+      />
 
-      {outputs.map((item, index) => (
-        <div key={index}>
+      {outputs.map(item => (
+        <div key={item.id}>
           <p className='user-prompt'>{item.prompt}</p>
           <p>{item.output}</p>
           <br />
